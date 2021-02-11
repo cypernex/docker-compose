@@ -4,6 +4,7 @@ services:
   # Define a Telegraf service
   telegraf:
     image: telegraf:latest
+    restart: always
     network_mode: bridge
     volumes:
       - telegraf-data:/etc/telegraf
@@ -16,6 +17,7 @@ services:
   # Define an InfluxDB service
   influxdb:
     image: quay.io/influxdb/influxdb:nightly
+    restart: always    
     network_mode: bridge
     volumes:
       - influxdb-data:/root/.influxdbv2
@@ -23,13 +25,17 @@ services:
       - "19086:8086"
   node-red:
     image: nodered/node-red:latest
+    restart: always
     network_mode: bridge
     ports:
       - "19880:1880"
+    environment:
+      - FLOWS=flows.json
     volumes:
       - node-red-data:/data
   grafana:
     image: grafana/grafana:latest
+    restart: always
     network_mode: bridge
     #links:
      # - influxdb
@@ -40,6 +46,16 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
       - grafana-data:/var/lib/grafana
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9000:9000
+      - 8000:8000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
 # Explicitly define the persistent volume for your data storage
 volumes:
   grafana-data:
@@ -49,3 +65,5 @@ volumes:
   influxdb-data:
 
   node-red-data:
+
+  portainer-data:
