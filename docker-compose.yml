@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  # Define a Telegraf service
+  telegraf:
+    image: telegraf:latest
+    network_mode: bridge
+    volumes:
+      - telegraf-data:/etc/telegraf
+    links:
+      - influxdb
+    ports:
+      - "19092:8092/udp"
+      - "19094:8094"
+      - "19125:8125/udp"
+  # Define an InfluxDB service
+  influxdb:
+    image: quay.io/influxdb/influx:nightly
+    network_mode: bridge
+    volumes:
+      - influxdb-data:/root/.influxdbv2
+    ports:
+      - "19086:8086"
+  grafana:
+    image: grafana/grafana:latest
+    network_mode: bridge
+    links:
+      - influxdb
+    ports:
+      - 19300:3000
+    environment:
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    volumes:
+      - grafana-data:/var/lib/grafana
+# Explicitly define the persistent volume for your data storage
+volumes:
+  grafana-data:
+
+  telegraf-data:
+  
+  influxdb-data:
