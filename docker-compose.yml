@@ -24,7 +24,7 @@ services:
     ports:
       - "19086:8086"
   node-red:
-    image: node-red/node-red:latest
+    image: nodered/node-red-docker:latest
     restart: always
     network_mode: bridge
     ports:
