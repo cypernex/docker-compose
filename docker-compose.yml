@@ -24,13 +24,13 @@ services:
     ports:
       - "19086:8086"
   node-red:
-    image: mthompson88/node-red-docker:latest
+    image: node-red/node-red:latest
     restart: always
     network_mode: bridge
     ports:
       - "19880:1880"
-    environment:
-      - FLOWS=flows.json
+    #environment:
+     # - FLOWS=flows.json
     volumes:
       - node-red-data:/data
   grafana:
