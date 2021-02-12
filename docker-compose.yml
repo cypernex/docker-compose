@@ -24,7 +24,7 @@ services:
     ports:
       - "19086:8086"
   node-red:
-    image: nodered/node-red:latest
+    image: github.com/cypernex/Node-RED-Docker
     restart: always
     network_mode: bridge
     ports:
