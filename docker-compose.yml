@@ -7,7 +7,7 @@ services:
     restart: always
     network_mode: bridge
     volumes:
-      - /shared/telegraf:/etc/telegraf
+      - telegraf-data:/etc/telegraf
    # links:
     #  - influxdb
     ports:
@@ -20,7 +20,7 @@ services:
     restart: always    
     network_mode: bridge
     volumes:
-      - /shared/influxdb:/root/.influxdbv2
+      - influxdb-data:/root/.influxdbv2
     ports:
       - "19086:8086"
   node-red:
@@ -32,7 +32,7 @@ services:
     #environment:
      # - FLOWS=flows.json
     volumes:
-      - /shared/node-red:/data
+      - node-red-data:/data
   grafana:
     image: grafana/grafana:latest
     restart: always
@@ -45,7 +45,7 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
-      - /shared/grafana:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
   portainer:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
@@ -54,8 +54,8 @@ services:
       - 9000:9000
       - 8000:8000
     volumes:
-      - /shared/portainer/var/run/docker.sock:/var/run/docker.sock
-      - /shared/portainer:/data
+      - portainer-data:/var/run/docker.sock
+      - portainer-data:/data
   magicmirror:
     image: bastilimbach/docker-magicmirror:latest
     network_mode: bridge
@@ -63,21 +63,26 @@ services:
       - "19888:8080"
 #    entrypoint: "entrypoint.sh"
     volumes:
-      - /shared/magicmirror:/opt/magic-mirror
+      - magicmirror-data:/opt/magic-mirror
+     
+  backup:
+    image: futurice/docker-volume-backup
+    volumes:
+      - telegraf-data:/backup/telegraf-data:ro
+      - influxdb-data:/backup/influxdb-data:ro
+      - node-red-data:/backup/node-red-data:ro
+      - grafana-data:/backup/grafana-data:ro    # Mount the Grafana data volume (as read-only)
+      - magicmirror-data:/backup/magicmirror-data:ro
+      - ./backups:/archive                      # Mount a local folder as the backup archive
 # Explicitly define the persistent volume for your data storage
-#volumes:
- # grafana-data:
+volumes:
+  grafana-data:
 
-  #telegraf-data:
+  telegraf-data:
   
-  #influxdb-data:
+  influxdb-data:
 
- # node-red-data:
+  node-red-data:
 
-  #portainer-data:
+  portainer-data:
 
-#  magicmirror:
- # magicmirror-data:
-#     driver: local
- #    driver_opts:
-  #     Mountpoint: /shared/magicmirror-data
