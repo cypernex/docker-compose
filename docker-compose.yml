@@ -7,7 +7,7 @@ services:
     restart: always
     network_mode: bridge
     volumes:
-      - telegraf-data:/etc/telegraf
+      - ./media/shared/telegraf:/etc/telegraf
    # links:
     #  - influxdb
     ports:
@@ -20,7 +20,7 @@ services:
     restart: always    
     network_mode: bridge
     volumes:
-      - influxdb-data:/root/.influxdbv2
+      - ./media/shared/influxdb:/root/.influxdbv2
     ports:
       - "19086:8086"
   node-red:
@@ -32,7 +32,7 @@ services:
     #environment:
      # - FLOWS=flows.json
     volumes:
-      - node-red-data:/data
+      - ./media/shared/node-red:/data
   grafana:
     image: grafana/grafana:latest
     restart: always
@@ -45,7 +45,7 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
-      - grafana-data:/var/lib/grafana
+      - ./media/shared/grafana:/var/lib/grafana
   portainer:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
@@ -54,26 +54,30 @@ services:
       - 9000:9000
       - 8000:8000
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer-data:/data
+      - ./media/shared/portainer/var/run/docker.sock:/var/run/docker.sock
+      - ./media/shared/portainer:/data
   magicmirror:
-    container_name: magicmirror
-    image: bastilimbach/docker-magicmirror
-    restart: unless-stopped
+    image: bastilimbach/docker-magicmirror:latest
+    network_mode: bridge
+    ports: 
+      - "19888:8080"
+#    entrypoint: "entrypoint.sh"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ~/magic_mirror/config:/opt/magic_mirror/config
-      - ~/magic_mirror/modules:/opt/magic_mirror/modules
-    ports:
-      - 8888:8080
+      - ./media/shared/magicmirror:/opt/magic-mirror
 # Explicitly define the persistent volume for your data storage
-volumes:
-  grafana-data:
+#volumes:
+ # grafana-data:
 
-  telegraf-data:
+  #telegraf-data:
   
-  influxdb-data:
+  #influxdb-data:
 
-  node-red-data:
+ # node-red-data:
 
-  portainer-data:
+  #portainer-data:
+
+#  magicmirror:
+ # magicmirror-data:
+#     driver: local
+ #    driver_opts:
+  #     Mountpoint: /shared/magicmirror-data
