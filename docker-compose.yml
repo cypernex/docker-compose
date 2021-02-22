@@ -7,7 +7,7 @@ services:
     restart: always
     network_mode: bridge
     volumes:
-      - ./media/shared/telegraf:/etc/telegraf
+      - /shared/telegraf:/etc/telegraf
    # links:
     #  - influxdb
     ports:
@@ -20,7 +20,7 @@ services:
     restart: always    
     network_mode: bridge
     volumes:
-      - ./media/shared/influxdb:/root/.influxdbv2
+      - /shared/influxdb:/root/.influxdbv2
     ports:
       - "19086:8086"
   node-red:
@@ -32,7 +32,7 @@ services:
     #environment:
      # - FLOWS=flows.json
     volumes:
-      - ./media/shared/node-red:/data
+      - /shared/node-red:/data
   grafana:
     image: grafana/grafana:latest
     restart: always
@@ -45,7 +45,7 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
-      - ./media/shared/grafana:/var/lib/grafana
+      - /shared/grafana:/var/lib/grafana
   portainer:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
@@ -54,8 +54,8 @@ services:
       - 9000:9000
       - 8000:8000
     volumes:
-      - ./media/shared/portainer/var/run/docker.sock:/var/run/docker.sock
-      - ./media/shared/portainer:/data
+      - /shared/portainer/var/run/docker.sock:/var/run/docker.sock
+      - /shared/portainer:/data
   magicmirror:
     image: bastilimbach/docker-magicmirror:latest
     network_mode: bridge
@@ -63,7 +63,7 @@ services:
       - "19888:8080"
 #    entrypoint: "entrypoint.sh"
     volumes:
-      - ./media/shared/magicmirror:/opt/magic-mirror
+      - /shared/magicmirror:/opt/magic-mirror
 # Explicitly define the persistent volume for your data storage
 #volumes:
  # grafana-data:
