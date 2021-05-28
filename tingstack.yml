@@ -6,7 +6,7 @@ services:
     image: telegraf:latest
     network_mode: bridge
     volumes:
-      - /share/container/persistent-data/telegraf/etc/telegraf:/etc/telegraf
+      - /smartsite/telegraf/etc/telegraf:/etc/telegraf
     user: root
     links:
       - influxdb
@@ -20,7 +20,7 @@ services:
     image: quay.io/influxdb/influx:nightly
     network_mode: bridge
     volumes:
-      - /share/container/persistent-data/influxdb-export-test/root/.influxdbv2:/root/.influxdbv2
+      - /smartsite/influxdb-export-test/root/.influxdbv2:/root/.influxdbv2
     user: root
     ports:
       - "8086:8086"
@@ -36,8 +36,8 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
-      - /share/container/persistent-data/grafana/var/lib/grafana:/var/lib/grafana
-      - /share/container/persistent-data/grafana/etc/grafana:/etc/grafana
+      - /smartsite/grafana/var/lib/grafana:/var/lib/grafana
+      - /smartsite/grafana/etc/grafana:/etc/grafana
     user: root
     restart: always
     
@@ -46,7 +46,7 @@ services:
     ports:
       - "1880:1880"
     volumes:
-      - /share/container/persistent-data/node-red/data:/data
+      - /smartsite/node-red/data:/data
     restart: always
 
 # Explicitly define the persistent volume for your data storage
