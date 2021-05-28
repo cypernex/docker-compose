@@ -35,6 +35,10 @@ services:
     environment:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
+      - DOCKER_INFLUXDB_INIT_USERNAME='admin'
+      - DOCKER_INFLUXDB_INIT_PASSWORD='adminadmin'
+      - DOCKER_INFLUXDB_INIT_ORG='cypernex'
+      - DOCKER_INFLUXDB_INIT_BUCKET='all data'
     volumes:
       - /smartsite/grafana/var/lib/grafana:/var/lib/grafana
       - /smartsite/grafana/etc/grafana:/etc/grafana
