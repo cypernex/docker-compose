@@ -11,9 +11,9 @@ services:
     links:
       - influxdb
     ports:
-      - "20092:8092/udp"
-      - "20094:8094"
-      - "20125:8125/udp"
+      - "8092:8092/udp"
+      - "8094:8094"
+      - "8125:8125/udp"
     restart: always
   # Define an InfluxDB service
   influxdb:
@@ -23,7 +23,7 @@ services:
       - /share/container/persistent-data/influxdb-export-test/root/.influxdbv2:/root/.influxdbv2
     user: root
     ports:
-      - "20086:8086"
+      - "8086:8086"
     restart: always
   grafana:
     image: grafana/grafana:latest
@@ -31,7 +31,7 @@ services:
     links:
       - influxdb
     ports:
-      - "20300:3000"
+      - "3000:3000"
     environment:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -44,7 +44,7 @@ services:
   node-red:
     image: nodered/node-red:latest
     ports:
-      - "20080:1880"
+      - "1880:1880"
     volumes:
       - /share/container/persistent-data/node-red/data:/data
     restart: always
