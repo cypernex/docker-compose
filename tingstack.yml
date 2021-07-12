@@ -48,10 +48,6 @@ services:
     
   node-red:
     image: nodered/node-red:latest
-    command: npm install node-red-contrib-digitaloak-mqtt
-    command: npm install node-red-contrib-loop-processing
-    command: npm install node-red-contrib-redis
-    command: npm install node-red-dashboard
     ports:
       - "1880:1880"
     volumes:
