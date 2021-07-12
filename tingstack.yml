@@ -48,6 +48,7 @@ services:
     
   node-red:
     image: nodered/node-red:latest
+    command: npm install node-red-contrib-digitaloak-mqtt
     ports:
       - "1880:1880"
     volumes:
